@@ -1,8 +1,8 @@
 const HotelsModel = require('../../models/hotels.model');
-
+ 
 const createHotel = async (req, res) =>{
     try{
-
+ 
         if(!req.body.hotelName ||
             !req.body.hotelDistrict ||
             !req.body.hotelImage){
@@ -23,7 +23,17 @@ const createHotel = async (req, res) =>{
     }
 }
 
+const getHotels = async (req, res) =>{
+    try{
+        const hotels = await HotelsModel.find({});
+        return res.status(200).send({status: 'success', data: hotels});
+    } catch(err){
+        res.status(500).json({message: err.message});
+    }
+}
+
 
 module.exports = {
-    createHotel
-}; 
+    createHotel,
+    getHotels
+};  
