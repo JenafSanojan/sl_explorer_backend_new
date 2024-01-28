@@ -7,16 +7,16 @@ const roundTripsRouter = require("./src/v1/routes/roundTrips/roundTrips.router")
  
 app.use(express.json());     
 
-app.use("/api/v1/hotels", hotelsRouter);
+app.use("/api/v1/hotels", hotelsRouter); 
 app.use("/api/v1/roundTrips", roundTripsRouter); 
 
-const listener = app.listen(process.env.PORT || 5000, () => {
+const listener = app.listen(5000, () => {
     console.log('App is listening on port ' + listener.address().port)
 });
 
 
 mongoose
-    .connect(process.env.MONGODB_URI)
+    .connect("mongodb+srv://root:root@cluster0.tvve4wa.mongodb.net/?retryWrites=true") 
     .then(()=>{
         console.log('MongoDB connected');
     })
