@@ -21,7 +21,7 @@ mongoose
         console.log('MongoDB connected');
     })
     .catch((err)=>{
-        console.log(err);
+        console.log(err); 
     });  
 
 
