@@ -15,17 +15,16 @@ const listener = app.listen(process.env.PORT || 5000, () => {
 });
 
 
-async function connectToDb() {
-    try {
-        await mongoose.connect(process.env.MONGODB_URI, );
+mongoose
+    .connect("mongodb+srv://root:root@cluster0.tvve4wa.mongodb.net/?retryWrites=true") 
+    .then(()=>{
         console.log('MongoDB connected');
-    } catch (err) {
-        console.log(err);
-    }
-}
+    })
+    .catch((err)=>{
+        console.log(err); 
+    });  
 
-connectToDb();
-
+ 
 
 
 
