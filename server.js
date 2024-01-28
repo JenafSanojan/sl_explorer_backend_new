@@ -10,19 +10,19 @@ app.use(express.json());
 app.use("/api/v1/hotels", hotelsRouter); 
 app.use("/api/v1/roundTrips", roundTripsRouter); 
 
-const listener = app.listen(5000, () => {
+const listener = app.listen(process.env.PORT || 5000, () => {
     console.log('App is listening on port ' + listener.address().port)
 });
 
 
 mongoose
-    .connect("mongodb+srv://root:root@cluster0.tvve4wa.mongodb.net/?retryWrites=true") 
+    .connect(process.env.MONGODB_URI) 
     .then(()=>{
         console.log('MongoDB connected');
     })
     .catch((err)=>{
         console.log(err); 
-    });  
+    });   
 
 
 
