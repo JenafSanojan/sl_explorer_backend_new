@@ -32,8 +32,21 @@ const getHotels = async (req, res) =>{
     }
 }
 
+const getHotel = async (req, res) =>{
+    try{
+        const hotel = await HotelsModel.findById(req.params.hotelId);
+        if(!hotel){
+            return res.status(404).send({message: "Hotel not found!"});
+        }
+        return res.status(200).send({status: 'success', data: hotel});
+    } catch(err){
+        res.status(500).json({message: err.message});
+    }
+}
+
 
 module.exports = {
     createHotel,
-    getHotels
-};  
+    getHotels,
+    getHotel,
+};   
