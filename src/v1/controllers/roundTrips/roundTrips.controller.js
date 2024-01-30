@@ -32,27 +32,35 @@ const createRoundTrip = async (req, res) => {
       prices: req.body.prices,
     };
 
+    const roundTrip = await RoundTripsModel.create(newRoundTrip);
+    return res.status(201).send({ status: "success", data: roundTrip });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 
-const getRoundTrips = async (req, res) =>{ 
-    try{
-        const data = await RoundTripsModel.find().populate('hotels.hotel').exec();
-        res.json(data);
-    } catch(err){
-        res.status(500).json({message: err.message});
-    }
-}
+const getRoundTrips = async (req, res) => {
+  try {
+    const data = await RoundTripsModel.find().populate("hotels.hotel").exec();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 
-const getRoundTripPackage = async (req, res) =>{
-    try{ 
-        const data = await RoundTripsModel.findById(req.params.id).populate('hotels.hotel').exec();
-        res.json(data);
-    } catch(err){
-        res.status(500).json({message: err.message});
-    }
-}
+const getRoundTripPackage = async (req, res) => {
+  try {
+    const data = await RoundTripsModel.findById(req.params.id)
+      .populate("hotels.hotel")
+      .exec();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 
 module.exports = {
-    createRoundTrip,
-    getRoundTrips,
-    getRoundTripPackage
+  createRoundTrip,
+  getRoundTrips,
+  getRoundTripPackage,
 };
