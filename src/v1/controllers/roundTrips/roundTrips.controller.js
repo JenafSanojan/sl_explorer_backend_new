@@ -40,7 +40,7 @@
 }
 
 
-const getRoundTrips = async (req, res) =>{
+const getRoundTrips = async (req, res) =>{ 
     try{
         const data = await RoundTripsModel.find().populate('hotels.hotel').exec();
         res.json(data);
@@ -49,7 +49,17 @@ const getRoundTrips = async (req, res) =>{
     }
 }
 
+const getRoundTripPackage = async (req, res) =>{
+    try{ 
+        const data = await RoundTripsModel.findById(req.params.id).populate('hotels.hotel').exec();
+        res.json(data);
+    } catch(err){
+        res.status(500).json({message: err.message});
+    }
+}
+
 module.exports = {
     createRoundTrip,
-    getRoundTrips
+    getRoundTrips,
+    getRoundTripPackage
 }

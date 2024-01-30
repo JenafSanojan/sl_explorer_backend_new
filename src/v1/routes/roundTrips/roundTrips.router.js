@@ -4,6 +4,7 @@ const roundTripsController = require('../../controllers/roundTrips/roundTrips.co
 
 router.post("/", roundTripsController.createRoundTrip);
 router.get("/", roundTripsController.getRoundTrips); 
+router.get("/:id", roundTripsController.getRoundTripPackage);
 
 
 module.exports = router;
