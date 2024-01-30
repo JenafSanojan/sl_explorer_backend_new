@@ -39,7 +39,28 @@ const getOrders = async (req, res) => {
   }
 };
 
+const getOrderByCustomerId = async (req, res) => {
+  try {
+    const orders = await OrdersModel.findOne({
+      customerId: req.params.customerId,
+    });
+    // .populate("package.roundTrip")
+    // .exec();
+
+    if (!orders) {
+      return res.status(404).json({ message: "Orders not found" });
+    }
+    console.log("orders");
+
+    return res.status(200).json(orders);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 module.exports = {
   createOrder,
   getOrders,
+  getOrderByCustomerId,
 };
