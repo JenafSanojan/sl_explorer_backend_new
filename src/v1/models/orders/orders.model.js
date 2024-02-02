@@ -79,7 +79,7 @@ const ordersSchema = new mongoose.Schema({
     },
     finalPrice: {
       type: Number,
-      required: true,
+      required: false,
     },
   },
   option: [
