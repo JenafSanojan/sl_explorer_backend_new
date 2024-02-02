@@ -1,4 +1,4 @@
-const OrdersModel = require("../../models/orders.model");
+const OrdersModel = require("../../models/orders/orders.model");
 
 const createOrder = async (req, res) => {
   try {
@@ -29,10 +29,8 @@ const createOrder = async (req, res) => {
 
 const getOrders = async (req, res) => {
   try {
-    const orders = await OrdersModel.find()
-      .populate("package.roundTrip")
-      .exec();
-    return res.status(200).json(orders);
+    const resp = await OrdersModel.find().populate("package.roundTrip").exec();
+    return res.status(200).json(resp);
   } catch (error) {
     //console.error(error);
     return res.status(500).json({ message: "Internal server error" });
@@ -41,17 +39,17 @@ const getOrders = async (req, res) => {
 
 const getOrderByCustomerId = async (req, res) => {
   try {
-    const orders = await OrdersModel.findOne({
+    const orders = await OrdersModel.find({
       customerId: req.params.customerId,
-    });
-    // .populate("package.roundTrip")
-    // .exec();
+    })
+      .populate("package.roundTrip" || "package.dayTrip")
+      .exec();
 
     if (!orders) {
       return res.status(404).json({ message: "Orders not found" });
     }
-    console.log("orders");
 
+    console.log("orders");
     return res.status(200).json(orders);
   } catch (error) {
     console.error(error);
