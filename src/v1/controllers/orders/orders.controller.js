@@ -59,7 +59,7 @@ const createOrder = async (req, res) => {
 const getOrders = async (req, res) => {
   try {
     const resp = await OrdersModel.find()
-      .populate("packageId.roundTrip")
+      //.populate("packageId.roundTrip")
       // .populate("packageId.dayTrip")
       .exec();
     return res.status(200).json(resp);
@@ -74,7 +74,7 @@ const getOrderByCustomerId = async (req, res) => {
     const orders = await OrdersModel.find({
       customerId: req.params.customerId,
     })
-      .populate("packageId.roundTrip")
+      //.populate("packageId.roundTrip")
       //.populate("packageId.dayTrip")
       .exec(); //one customer can have multiple orders
 
