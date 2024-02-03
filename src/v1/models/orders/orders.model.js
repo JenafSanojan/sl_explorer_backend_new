@@ -59,17 +59,18 @@ const ordersSchema = new mongoose.Schema({
 
   status: {
     type: String,
-    options: ["Pending", "Accepted", "Confirmed", "Cancelled"],
+    options: ["Pending", "Invoice", "Confirmed", "Cancelled"],
     required: true,
   },
 
   price: {
     shownPrice: {
-      //calculated
+      //automatically calculated in app
       type: Number,
       required: true,
     },
     exactPrice: {
+      //admin calculated
       type: Number,
       required: false,
     },
@@ -78,16 +79,44 @@ const ordersSchema = new mongoose.Schema({
       required: false,
     },
     finalPrice: {
+      //admin calculated - discount
       type: Number,
       required: false,
     },
   },
+
+  advance: {
+    amount: {
+      type: Number,
+      required: false,
+    },
+    reference: {
+      type: String,
+      required: false,
+    },
+    isPaid: {
+      type: Boolean,
+      required: false,
+    },
+  },
+
+  paymentComments: {
+    type: String,
+    required: false,
+  },
+
   option: [
     {
-      type: String,
+      name: {
+        type: String,
+        required: false,
+      },
+      amount: {
+        type: Number,
+        required: false,
+      },
     },
   ],
-  // Add more properties as needed
 });
 
 const Order = mongoose.model("Order", ordersSchema); //collection name will be orders by default

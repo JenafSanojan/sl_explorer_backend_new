@@ -11,11 +11,11 @@ const createOrder = async (req, res) => {
     const newOrder = new OrdersModel({
       customerId: req.body.customerId,
       packageId: {
-        roundTrip: req.body.package.roundTrip,
-        dayTrip: req.body.package.dayTrip,
+        roundTrip: req.body.packageId.roundTrip,
+        dayTrip: req.body.packageId.dayTrip,
       },
-      orderDate: req.body.orderDate,
-      tripDate: req.body.tripDate, // Assuming 'tripDate' is part of the request body
+      orderDate: req.body.orderDate, //order date is date when the order is placed
+      tripDate: req.body.tripDate, //trip date is the date of the trip
       noOfPeople: {
         adults: req.body.noOfPeople.adults,
         children: req.body.noOfPeople.children,
@@ -33,19 +33,17 @@ const createOrder = async (req, res) => {
         discount: req.body.price.discount,
         finalPrice: req.body.price.finalPrice,
       },
-      option: req.body.option,
+      advance: {
+        amount: req.body.advance.amount,
+        reference: req.body.advance.reference,
+        isPaid: req.body.advance.isPaid,
+      },
+      paymentComments: req.body.paymentComments,
+      option: {
+        name: req.body.option.name,
+        amount: req.body.option.amount,
+      },
     });
-
-    // Assuming 'option' is part of the request body, and it's an array
-    // If 'option' is not an array, modify accordingly
-
-    // const newOrder = new OrdersModel({
-    //   customerId: req.body.customerId,
-    //   package: req.body.package,
-    //   orderDate: req.body.orderDate,
-    //   noOfPeople: req.body.noOfPeople,
-    //   option: req.body.option,
-    // });
 
     const order = await OrdersModel.create(newOrder);
 
@@ -61,7 +59,8 @@ const createOrder = async (req, res) => {
 const getOrders = async (req, res) => {
   try {
     const resp = await OrdersModel.find()
-      .populate("packageId.roundTrip" || "packageId.dayTrip")
+      .populate("packageId.roundTrip")
+      // .populate("packageId.dayTrip")
       .exec();
     return res.status(200).json(resp);
   } catch (error) {
@@ -75,7 +74,8 @@ const getOrderByCustomerId = async (req, res) => {
     const orders = await OrdersModel.find({
       customerId: req.params.customerId,
     })
-      .populate("packageId.roundTrip" || "packageId.dayTrip")
+      .populate("packageId.roundTrip")
+      //.populate("packageId.dayTrip")
       .exec(); //one customer can have multiple orders
 
     if (!orders) {
