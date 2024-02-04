@@ -5,8 +5,11 @@ require("dotenv").config();
 const hotelsRouter = require("./src/v1/routes/hotels/hotels.router");
 const roundTripsRouter = require("./src/v1/routes/roundTrips/roundTrips.router");
 const ordersRouter = require("./src/v1/routes/orders/orders.router");
+const cors = require("cors");
 
 app.use(express.json());
+
+app.use(cors());
 
 app.use("/api/v1/hotels", hotelsRouter);
 app.use("/api/v1/roundTrips", roundTripsRouter);
