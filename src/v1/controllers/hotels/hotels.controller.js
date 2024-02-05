@@ -38,9 +38,9 @@ const getHotel = async (req, res) =>{
         if(!hotel){
             return res.status(404).send({message: "Hotel not found!"});
         }
-        return res.status(200).send({status: 'success', message: 'Hotel deleted succesfully'});
+        return res.status(200).send({status: 'success', body: hotel});
     } catch(err){
-        res.status(500).json({message: err.message});
+        res.status(500).json({message: err.message}); 
     } 
 }
 
@@ -50,7 +50,7 @@ const deleteHotel = async (req, res) =>{
         if(!hotel){
             return res.status(404).send({message: "Hotel not found!"});
         }
-        return res.status(200).send({status: 'success', data: hotel});
+        return res.status(200).send({status: 'success', message: 'Hotel deleted successfully!'});
     } catch(err){
         res.status(500).json({message: err.message});
     }
