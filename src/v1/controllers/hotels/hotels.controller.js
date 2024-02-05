@@ -56,10 +56,24 @@ const deleteHotel = async (req, res) =>{
     }
 }
 
+const updateHotel = async (req, res) =>{
+    try{
+        const hotel = await HotelsModel.findByIdAndUpdate(req.params.hotelId, req.body, {new: true});
+        if(!hotel){
+            return res.status(404).send({message: "Hotel not found!"});
+        }
+        return res.status(200).send({status: 'success', message: 'Hotel details updated successfully!'});
+    }
+    catch(err){
+        res.status(500).json({message: err.message});
+    }
+}
+
 
 module.exports = {
     createHotel,
     getHotels,
     getHotel,
-    deleteHotel
+    deleteHotel,
+    updateHotel
 };   
