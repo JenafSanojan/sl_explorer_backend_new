@@ -56,6 +56,42 @@ const createOrder = async (req, res) => {
   }
 };
 
+const updateReference = async (req, res) => {
+  try {
+    // const orderId = req.body.orderId;
+
+    // if (!orderId) {
+    //   return res.status(400).json({
+    //     message: "orderId is required for updating the reference.",
+    //   });
+    // }
+
+    existingOrder = await OrdersModel.findById(req.body.orderId);
+
+    // Checking if the document exists
+    // if (!existingOrder) {
+    //   return res
+    //     .status(404)
+    //     .json({ message: "Order not found for the specified customer ID." });
+    // }
+
+    // Updating only the "reference" field
+    existingOrder.advance = {
+      reference: req.body.reference || existingOrder.advance.reference,
+    };
+
+    // Saving the updated document
+    await existingOrder.save();
+
+    return res
+      .status(200)
+      .json({ message: "Advance reference updated successfully" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 const getOrders = async (req, res) => {
   try {
     const resp = await OrdersModel.find()
@@ -91,6 +127,7 @@ const getOrderByCustomerId = async (req, res) => {
 
 module.exports = {
   createOrder,
+  updateReference,
   getOrders,
   getOrderByCustomerId,
 };

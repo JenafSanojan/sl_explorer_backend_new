@@ -9,4 +9,6 @@ router.get("/", ordersController.getOrders);
 
 router.get("/:customerId", ordersController.getOrderByCustomerId);
 
+router.post("/reference", ordersController.updateReference);
+
 module.exports = router;
