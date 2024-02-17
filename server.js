@@ -9,6 +9,8 @@ const adminsRouter = require("./src/v1/routes/admins/admins.router");
 const cors = require("cors");
 const admin = require("firebase-admin");
 const serviceAccount = require("./sl-explorer-firebase-adminsdk-f1771-328b42f1b0.json");
+const dayTripsRouter=require("./src/v1/routes/dayTrips/dayTrips.router");
+const festivalsRouter=require("./src/v1/routes/Festivals/festivals.router");
 
 app.use(express.json());
 
@@ -23,6 +25,8 @@ app.use("/api/v1/hotels", hotelsRouter);
 app.use("/api/v1/roundTrips", roundTripsRouter);
 app.use("/api/v1/orders", ordersRouter);
 app.use("/api/v1/setAdmin", adminsRouter);
+app.use("/api/v1/dayTrips",dayTripsRouter);
+app.use("/api/v1/festivals",festivalsRouter);
 
 const listener = app.listen(process.env.PORT || 5000, () => {
   console.log("App is listening on port " + listener.address().port);
