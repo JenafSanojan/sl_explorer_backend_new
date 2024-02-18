@@ -47,14 +47,31 @@ const createDayTrip = async (req, res) =>{
 const getDayTrips = async (req, res) =>{
    try{
        const data = await DayTripsModel.find();
-       //.populate('avaliableDates.avaliableDate').exec();
        res.json(data);
    } catch(err){
        res.status(500).json({message: err.message});
    }
 }
 
+const getDayTripsByPackageDays = async (req, res) => {
+  try {
+    const data = await DayTripsModel.find({
+      packageDays:req.params.packageDays,
+    });
+
+    if (!data) {
+      return res.status(404).json({ message: "Day trips not found" });
+    }
+    return res.status(200).json(data);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" + error });
+  }
+};
+
 module.exports = {
    createDayTrip,
-   getDayTrips
-}
+   getDayTrips,
+   getDayTripsByPackageDays,
+
+};
