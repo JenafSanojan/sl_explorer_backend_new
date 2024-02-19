@@ -1,55 +1,108 @@
 const Wishlist = require("../../models/wishlist/wishlists.model");
-class WishlistsController {
-  // Create a new wishlist for a user
-  createWishlist(req, res) {
-    try{
-        const newWishlist = new Wishlist({
-            userId: req.body.userId
-        })
-        const wishlist = await Wishlist.create(newWishlist);
-        return res.status(201).json({ message: "Wishlist created successfully" });
-    }catch(error){
-        
+
+// Create a new wishlist for a user
+const createWishlist = async (req, res) => {
+  try {
+    const newWishlist = new Wishlist({
+      userId: req.body.userId,
+    });
+    const wishlist = await Wishlist.create(newWishlist);
+    return res.status(201).json({ message: "Wishlist created successfully" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+// Add an item to a user's wishlist
+const addWishlistItem = async (req, res) => {
+  try {
+    existingWishlist = await Wishlist.findOne({
+      userId: req.body.userId,
+    });
+    if (existingWishlist) {
+      existingWishlist.wishes.push({
+        packageType: req.body.packageType,
+        packageId: req.body.packageId,
+      });
+      await existingWishlist.save();
+    } else {
+      const newWishlist = new Wishlist({
+        userId: req.body.userId,
+      });
+      newWishlist.wishes.push({
+        packageType: req.body.packageType,
+        packageId: req.body.packageId,
+      });
+      const wishlist = await Wishlist.create(newWishlist);
     }
-}
-
-  // Create a new wishlist item
-  createWishlistItem(req, res) {}
-
-  // Update an existing wishlist item
-  updateWishlistItem(req, res) {
-    // TODO: Implement update wishlist item logic
+    return res
+      .status(201)
+      .json({ message: "Wishlist item added successfully" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: error.message });
   }
+};
 
-  // Delete a wishlist item
-  deleteWishlistItem(req, res) {
-    // TODO: Implement delete wishlist item logic
+//delete wish
+//delete using pack id or wish id ??
+const deleteWishlistItem = async (req, res) => {
+  try {
+    existingWishlist = await Wishlist.findOne({
+      userId: req.body.userId,
+    });
+
+    if (existingWishlist) {
+      existingWishlist.wishes = existingWishlist.wishes.filter(
+        (wish) => wish.packageId != req.body.packageId
+      );
+
+      await existingWishlist.save();
+
+      return res
+        .status(201)
+        .json({ message: "Wishlist item deleted successfully" });
+    } else {
+      return res
+        .status(500)
+        .json({ message: "No wishlist found for the user" });
+    }
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: e.message });
   }
+};
 
-  // Create a new wishlist for a user
-  createWishlist(req, res) {
-    // TODO: Implement create wishlist logic
+//get all wishes
+const getWishlists = async (req, res) => {
+  try {
+    const response = await Wishlist.find();
+
+    return res.status(200).json(response);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: e.message });
   }
+};
 
-  // Add an item to a user's wishlist
-  addWishlistItem(req, res) {
-    // TODO: Implement add wishlist item logic
+const getWishlist = async (req, res) => {
+  try {
+    const resp = await Wishlist.findOne({
+      userId: req.params.userId,
+    });
+
+    return res.status(200).json(resp);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: e.message });
   }
+};
 
-  // Get all wishlists
-  getWishlists(req, res) {
-    // TODO: Implement get wishlists logic
-  }
-
-  // Get a user's wishlist
-  getWishlist(req, res) {
-    // TODO: Implement get wishlist logic
-  }
-
-  // Delete one item from a user's wishlist
-  deleteWishlistItem(req, res) {
-    // TODO: Implement delete wishlist item logic
-  }
-}
-
-module.exports = WishlistsController;
+module.exports = {
+  createWishlist,
+  addWishlistItem,
+  deleteWishlistItem,
+  getWishlists,
+  getWishlist,
+};

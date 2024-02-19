@@ -12,7 +12,7 @@ const wishlistSchema = new mongoose.Schema({
           type: String,
           required: true,
         },
-        packageID: {
+        packageId: {
           type: String,
           required: true,
         },
