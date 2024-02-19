@@ -30,11 +30,18 @@ const addWishlistItem = async (req, res) => {
       const newWishlist = new Wishlist({
         userId: req.body.userId,
       });
-      newWishlist.wishes.push({
+      const wishlist = await Wishlist.create(newWishlist);
+
+      existingWishlist = await Wishlist.findOne({
+        userId: req.body.userId,
+      });
+
+      existingWishlist.wishes.push({
         packageType: req.body.packageType,
         packageId: req.body.packageId,
       });
-      const wishlist = await Wishlist.create(newWishlist);
+
+      await existingWishlist.save();
     }
     return res
       .status(201)
