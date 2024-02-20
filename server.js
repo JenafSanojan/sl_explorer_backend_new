@@ -11,6 +11,8 @@ const admin = require("firebase-admin");
 const serviceAccount = require("./sl-explorer-firebase-adminsdk-f1771-328b42f1b0.json");
 const dayTripsRouter=require("./src/v1/routes/dayTrips/dayTrips.router");
 const festivalsRouter=require("./src/v1/routes/Festivals/festivals.router");
+const categoryRouter=require("./src/v1/routes/dayTrips/category.router");
+
 
 app.use(express.json());
 
@@ -27,6 +29,7 @@ app.use("/api/v1/orders", ordersRouter);
 app.use("/api/v1/setAdmin", adminsRouter);
 app.use("/api/v1/dayTrips",dayTripsRouter);
 app.use("/api/v1/festivals",festivalsRouter);
+app.use("/api/v1/dayTips/category",categoryRouter);
 
 const listener = app.listen(process.env.PORT || 5000, () => {
   console.log("App is listening on port " + listener.address().port);

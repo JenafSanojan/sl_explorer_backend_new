@@ -53,6 +53,17 @@ const getDayTrips = async (req, res) =>{
    }
 }
 
+const getDayTripsByCategory = async (req, res) => {
+  try {
+    const category = req.params.category;
+    const dayTrips = await DayTripsModel.find({ packageCategoryName: category });
+    res.json(dayTrips);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
 const getDayTripsByPackageDays = async (req, res) => {
   try {
     const data = await DayTripsModel.find({
@@ -69,9 +80,28 @@ const getDayTripsByPackageDays = async (req, res) => {
   }
 };
 
+const getDayTripsByCategoryAndDuration = async (req, res) => {
+  try {
+      const { category, duration } = req.params;
+      const dayTrips = await DayTripsModel.find({ packageCategoryName: category, packageDays: duration });
+
+      if (!dayTrips) {
+          return res.status(404).json({ message: "Day trips not found" });
+      }
+
+      res.status(200).json(dayTrips);
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Internal server error" + error });
+  }
+};
+
+
 module.exports = {
    createDayTrip,
    getDayTrips,
+   getDayTripsByCategory,
    getDayTripsByPackageDays,
+   getDayTripsByCategoryAndDuration,
 
 };
