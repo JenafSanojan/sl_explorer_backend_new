@@ -20,6 +20,8 @@ const createOrder = async (req, res) => {
         adults: req.body.noOfPeople.adults,
         children: req.body.noOfPeople.children,
       },
+      pickUpLocation: req.body.pickUpLocation,
+      clientRequests: req.body.clientRequests,
       rooms: {
         single: req.body.rooms.single,
         double: req.body.rooms.double,
