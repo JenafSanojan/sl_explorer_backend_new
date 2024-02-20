@@ -4,8 +4,8 @@ const dayTripsController = require('../../controllers/dayTrips/dayTrips.controll
 
 router.post("/", dayTripsController.createDayTrip);
 router.get("/", dayTripsController.getDayTrips);
-router.get('/:category', dayTripsController.getDayTripsByCategory);
 router.get("/:packageDays", dayTripsController.getDayTripsByPackageDays);
+router.get('/:category', dayTripsController.getDayTripsByCategory);
 router.get('/:category/:duration', dayTripsController.getDayTripsByCategoryAndDuration);
 
 module.exports = router; 
