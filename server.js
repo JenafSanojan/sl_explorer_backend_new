@@ -12,7 +12,7 @@ const serviceAccount = require("./sl-explorer-firebase-adminsdk-f1771-328b42f1b0
 const dayTripsRouter=require("./src/v1/routes/dayTrips/dayTrips.router");
 const festivalsRouter=require("./src/v1/routes/Festivals/festivals.router");
 const categoryRouter=require("./src/v1/routes/dayTrips/category.router");
-
+const wishlistsRouter = require("./src/v1/routes/wishlist/wishlist.router.js");
 
 app.use(express.json());
 
@@ -20,16 +20,20 @@ app.use(cors());
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://console.firebase.google.com/project/sl-explorer/database/sl-explorer-default-rtdb/data/~2F",
+  databaseURL:
+    "https://console.firebase.google.com/project/sl-explorer/database/sl-explorer-default-rtdb/data/~2F",
 });
 
 app.use("/api/v1/hotels", hotelsRouter);
 app.use("/api/v1/roundTrips", roundTripsRouter);
 app.use("/api/v1/orders", ordersRouter);
 app.use("/api/v1/setAdmin", adminsRouter);
+
 app.use("/api/v1/dayTrips",dayTripsRouter);
 app.use("/api/v1/festivals",festivalsRouter);
 app.use("/api/v1/dayTips/category",categoryRouter);
+app.use("/api/v1/admins", adminsRouter);
+app.use("/api/v1/wishlists", wishlistsRouter);
 
 const listener = app.listen(process.env.PORT || 5000, () => {
   console.log("App is listening on port " + listener.address().port);

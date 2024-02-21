@@ -105,18 +105,21 @@ const ordersSchema = new mongoose.Schema({
     required: false,
   },
 
-  option: [
-    {
-      name: {
-        type: String,
-        required: false,
+  option: {
+    type: [
+      {
+        name: {
+          type: String,
+          required: true,
+        },
+        amount: {
+          type: Number,
+          required: true,
+        },
       },
-      amount: {
-        type: Number,
-        required: false,
-      },
-    },
-  ],
+    ],
+    default: [],
+  },
 });
 
 const Order = mongoose.model("Order", ordersSchema); //collection name will be orders by default
