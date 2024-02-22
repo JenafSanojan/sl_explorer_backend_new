@@ -27,7 +27,7 @@ const createFestival = async (req, res) =>{
    } catch(err){
        res.status(500).json({message: err.message});
    }
-}
+};
 
 
 const getFestival = async (req, res) =>{
@@ -37,9 +37,53 @@ const getFestival = async (req, res) =>{
    } catch(err){
        res.status(500).json({message: err.message});
    }
-}
+};
+
+const getFestivalById = async (req, res) =>{
+    try{
+        const data = await festivalsModel.findById(req.params.festivalId);
+        if(!data){
+            return res.status(404).send({message: "Festival not found!"});
+        }
+        return res.status(200).send({status: 'success', body: data});
+    } catch(err){
+        res.status(500).json({message: err.message}); 
+    } 
+};
+
+const deleteFestival = async (req, res) =>{
+    try{
+        const data = await festivalsModel.findByIdAndDelete(req.params.festivalId);
+        if(!data){
+            return res.status(404).send({message: "Festival not found!"});
+        }
+        return res.status(200).send({status: 'success', message: 'Festival deleted successfully!'});
+    } catch(err){
+        res.status(500).json({message: err.message});
+    }
+};
+
+const updateFestival = async (req, res) =>{
+    try{
+        const data = await festivalsModel.findByIdAndUpdate(req.params.festivalId, req.body, {new: true});
+        if(!data){
+            return res.status(404).send({message: "Festival not found!"});
+        }
+        return res.status(200).send({status: 'success', message: 'Festival details updated successfully!'});
+    }
+    catch(err){
+        res.status(500).json({message: err.message});
+    }
+};
+
+
+
+
 
 module.exports = {
    createFestival,
-   getFestival
+   getFestival,
+   getFestivalById,
+   deleteFestival,
+   updateFestival
 }
