@@ -4,5 +4,8 @@ const festivalsController = require('../../controllers/festivals/festivals.contr
 
 router.post("/", festivalsController.createFestival);
 router.get("/", festivalsController.getFestival); 
+router.get("/:festivalId", festivalsController.getFestivalById);
+router.delete("/:festivalId", festivalsController.deleteFestival);
+router.patch("/:festivalId", festivalsController.updateFestival);
 
 module.exports = router; 
