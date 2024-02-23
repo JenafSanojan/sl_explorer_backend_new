@@ -20,6 +20,8 @@ const createOrder = async (req, res) => {
         adults: req.body.noOfPeople.adults,
         children: req.body.noOfPeople.children,
       },
+      pickUpLocation: req.body.pickUpLocation,
+      clientRequests: req.body.clientRequests,
       rooms: {
         single: req.body.rooms.single,
         double: req.body.rooms.double,
@@ -56,7 +58,7 @@ const createOrder = async (req, res) => {
   }
 };
 
-const updateReference = async (req, res) => {
+const updateStatus = async (req, res) => {
   try {
     // const orderId = req.body.orderId;
 
@@ -76,8 +78,8 @@ const updateReference = async (req, res) => {
     // }
 
     // Updating only the "reference" field
-    existingOrder.advance = {
-      reference: req.body.reference || existingOrder.advance.reference,
+    existingOrder.status = {
+      reference: req.body.status || existingOrder.advance.reference,
     };
 
     // Saving the updated document
@@ -127,7 +129,7 @@ const getOrderByCustomerId = async (req, res) => {
 
 module.exports = {
   createOrder,
-  updateReference,
+  updateStatus,
   getOrders,
   getOrderByCustomerId,
 };
