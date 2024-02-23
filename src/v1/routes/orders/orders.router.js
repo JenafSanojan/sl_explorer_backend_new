@@ -9,6 +9,6 @@ router.get("/", ordersController.getOrders);
 
 router.get("/:customerId", ordersController.getOrderByCustomerId);
 
-router.post("/reference", ordersController.updateReference);
+router.post("/status", ordersController.updateStatus);
 
 module.exports = router;

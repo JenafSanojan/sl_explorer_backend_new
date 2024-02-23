@@ -38,8 +38,33 @@ const getHotel = async (req, res) =>{
         if(!hotel){
             return res.status(404).send({message: "Hotel not found!"});
         }
-        return res.status(200).send({status: 'success', data: hotel});
+        return res.status(200).send({status: 'success', body: hotel});
     } catch(err){
+        res.status(500).json({message: err.message}); 
+    } 
+}
+
+const deleteHotel = async (req, res) =>{
+    try{
+        const hotel = await HotelsModel.findByIdAndDelete(req.params.hotelId);
+        if(!hotel){
+            return res.status(404).send({message: "Hotel not found!"});
+        }
+        return res.status(200).send({status: 'success', message: 'Hotel deleted successfully!'});
+    } catch(err){
+        res.status(500).json({message: err.message});
+    }
+}
+
+const updateHotel = async (req, res) =>{
+    try{
+        const hotel = await HotelsModel.findByIdAndUpdate(req.params.hotelId, req.body, {new: true});
+        if(!hotel){
+            return res.status(404).send({message: "Hotel not found!"});
+        }
+        return res.status(200).send({status: 'success', message: 'Hotel details updated successfully!'});
+    }
+    catch(err){
         res.status(500).json({message: err.message});
     }
 }
@@ -49,4 +74,6 @@ module.exports = {
     createHotel,
     getHotels,
     getHotel,
+    deleteHotel,
+    updateHotel
 };   

@@ -27,6 +27,16 @@ const ordersSchema = new mongoose.Schema({
     required: true,
   },
 
+  pickUpLocation: {
+    type: String,
+    required: false,
+  },
+
+  clientRequests: {
+    type: String,
+    required: false,
+  },
+
   noOfPeople: {
     adults: {
       type: Number,
@@ -39,22 +49,25 @@ const ordersSchema = new mongoose.Schema({
   },
 
   rooms: {
-    single: {
-      type: Number,
-      required: true,
+    type: {
+      single: {
+        type: Number,
+        required: true,
+      },
+      double: {
+        type: Number,
+        required: true,
+      },
+      triple: {
+        type: Number,
+        required: true,
+      },
+      Quadruple: {
+        type: Number,
+        required: true,
+      },
     },
-    double: {
-      type: Number,
-      required: true,
-    },
-    triple: {
-      type: Number,
-      required: true,
-    },
-    Quadruple: {
-      type: Number,
-      required: true,
-    },
+    required: false,
   },
 
   status: {
@@ -105,18 +118,21 @@ const ordersSchema = new mongoose.Schema({
     required: false,
   },
 
-  option: [
-    {
-      name: {
-        type: String,
-        required: false,
+  option: {
+    type: [
+      {
+        name: {
+          type: String,
+          required: true,
+        },
+        amount: {
+          type: Number,
+          required: true,
+        },
       },
-      amount: {
-        type: Number,
-        required: false,
-      },
-    },
-  ],
+    ],
+    default: [],
+  },
 });
 
 const Order = mongoose.model("Order", ordersSchema); //collection name will be orders by default
