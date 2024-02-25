@@ -1,9 +1,11 @@
 const DayTripsModel = require('../../models/dayTrips/dayTrip.model');
+const CategoryModel = require('../../models/dayTrips/category.model');
 
 const createDayTrip = async (req, res) =>{
    try{
 
        if(!req.body.packageCategoryName||
+        !req.body.packageCategoryImage||
         !req.body.packageDays||
         !req.body.packageName ||
            !req.body.packageShortDescription ||
@@ -19,8 +21,19 @@ const createDayTrip = async (req, res) =>{
            return res.status(400).send({message: "Request body is missing!"});
        }  
 
+       
+       const existingCategory = await CategoryModel.findOne({ categoryName: req.body.packageCategoryName });
+
+       if (!existingCategory) {
+           await CategoryModel.create({
+               categoryName: req.body.packageCategoryName,
+               categoryImage: req.body.packageCategoryImage
+           });
+       }
+
        const newDayTrip = {
         packageCategoryName: req.body.packageCategoryName,
+        packageCategoryImage: req.body.packageCategoryImage,
         packageDays: req.body.packageDays,
         packageName: req.body.packageName,
         packageShortDescription: req.body.packageShortDescription,
@@ -35,8 +48,10 @@ const createDayTrip = async (req, res) =>{
         price: req.body.price
        }
 
+
        const dayTrip = await DayTripsModel.create(newDayTrip);
        return res.status(201).send({status: 'success', data: dayTrip});
+
 
    } catch(err){
        res.status(500).json({message: err.message});
@@ -95,6 +110,8 @@ const getDayTripsByCategoryAndDuration = async (req, res) => {
       return res.status(500).json({ message: "Internal server error" + error });
   }
 };
+
+
 
 
 module.exports = {
