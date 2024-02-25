@@ -5,6 +5,9 @@ const dayTripsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  packageCategoryImage: {
+    type: String,
+  },
     packageDays: {
       type: Number,
       required: true,
