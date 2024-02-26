@@ -11,4 +11,6 @@ router.get("/:customerId", ordersController.getOrderByCustomerId);
 
 router.post("/status", ordersController.updateStatus);
 
+router.put("/:orderId", ordersController.updateOrder);
+
 module.exports = router;
