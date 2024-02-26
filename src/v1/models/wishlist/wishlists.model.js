@@ -8,14 +8,7 @@ const wishlistSchema = new mongoose.Schema({
   wishes: {
     type: [
       {
-        packageType: {
-          type: String,
-          required: true,
-        },
-        packageId: {
-          type: String,
-          required: true,
-        },
+        type: String,
       },
     ],
     default: [],
