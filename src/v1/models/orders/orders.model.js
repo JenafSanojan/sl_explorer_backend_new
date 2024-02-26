@@ -76,6 +76,11 @@ const ordersSchema = new mongoose.Schema({
     required: true,
   },
 
+  userDeviceToken:{
+    type: String,
+    required: false,
+  },  
+
   price: {
     shownPrice: {
       //automatically calculated in app

@@ -30,6 +30,7 @@ const createOrder = async (req, res) => {
         Quadruple: req.body.rooms.Quadruple,
       },
       status: req.body.status,
+      userDeviceToken: req.body.userDeviceToken, 
       price: {
         shownPrice: req.body.price.shownPrice,
         exactPrice: req.body.price.exactPrice,
@@ -100,7 +101,7 @@ const updateOrder = async (req, res) =>{
 
       if(!order){
         return res.status(404).json({message:'Order not found'});
-      }
+      } 
 
       order.price.finalPrice = finalPrice;
       order.advance.amount = advancePrice;  
