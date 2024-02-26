@@ -1,3 +1,4 @@
+const Order = require("../../models/orders/orders.model");
 const OrdersModel = require("../../models/orders/orders.model");
 
 const createOrder = async (req, res) => {
@@ -20,6 +21,8 @@ const createOrder = async (req, res) => {
         adults: req.body.noOfPeople.adults,
         children: req.body.noOfPeople.children,
       },
+      pickUpLocation: req.body.pickUpLocation,
+      clientRequests: req.body.clientRequests,
       rooms: {
         single: req.body.rooms.single,
         double: req.body.rooms.double,
@@ -27,6 +30,7 @@ const createOrder = async (req, res) => {
         Quadruple: req.body.rooms.Quadruple,
       },
       status: req.body.status,
+      userDeviceToken: req.body.userDeviceToken, 
       price: {
         shownPrice: req.body.price.shownPrice,
         exactPrice: req.body.price.exactPrice,
@@ -56,7 +60,7 @@ const createOrder = async (req, res) => {
   }
 };
 
-const updateReference = async (req, res) => {
+const updateStatus = async (req, res) => {
   try {
     // const orderId = req.body.orderId;
 
@@ -76,21 +80,45 @@ const updateReference = async (req, res) => {
     // }
 
     // Updating only the "reference" field
-    existingOrder.advance = {
-      reference: req.body.reference || existingOrder.advance.reference,
-    };
+    existingOrder.status = req.body.status || existingOrder.status;
 
     // Saving the updated document
     await existingOrder.save();
 
-    return res
-      .status(200)
-      .json({ message: "Advance reference updated successfully" });
+    return res.status(200).json({ message: "Status updated successfully" });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: error.message });
   }
 };
+
+const updateOrder = async (req, res) =>{
+  try{
+      const orderId = req.params.orderId;
+      const { finalPrice, advancePrice, discount } = req.body;
+
+      const order = await Order.findById(orderId);
+
+      if(!order){
+        return res.status(404).json({message:'Order not found'});
+      } 
+
+      order.price.finalPrice = finalPrice;
+      order.advance.amount = advancePrice;  
+      order.price.discount = discount;
+
+      await order.save();
+
+      return res.status(200).json({message:'Order updated successfully', order})
+
+  }catch(e){
+     console.error('Error updating order:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+
+
 
 const getOrders = async (req, res) => {
   try {
@@ -127,7 +155,8 @@ const getOrderByCustomerId = async (req, res) => {
 
 module.exports = {
   createOrder,
-  updateReference,
+  updateStatus,
   getOrders,
   getOrderByCustomerId,
-};
+  updateOrder
+}; 

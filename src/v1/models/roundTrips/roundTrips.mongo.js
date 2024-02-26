@@ -60,4 +60,4 @@ const roundTripsSchema = new mongoose.Schema({
  
 }); 
  
-module.exports = mongoose.model('RoundTrips', roundTripsSchema); 
+module.exports = mongoose.model('RoundTrips', roundTripsSchema);

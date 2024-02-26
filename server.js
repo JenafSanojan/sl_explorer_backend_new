@@ -9,9 +9,11 @@ const adminsRouter = require("./src/v1/routes/admins/admins.router");
 const cors = require("cors");
 const admin = require("firebase-admin");
 const serviceAccount = require("./sl-explorer-firebase-adminsdk-f1771-328b42f1b0.json");
-const dayTripsRouter = require("./src/v1/routes/dayTrips/dayTrips.router");
-const festivalsRouter = require("./src/v1/routes/Festivals/festivals.router");
+const dayTripsRouter=require("./src/v1/routes/dayTrips/dayTrips.router");
+const festivalsRouter=require("./src/v1/routes/Festivals/festivals.router");
+const categoryRouter=require("./src/v1/routes/dayTrips/category.router");
 const wishlistsRouter = require("./src/v1/routes/wishlist/wishlist.router.js");
+const cruiseShipRouter = require("./src/v1/routes/cruiseShips/cruiseShip.router.js");
 
 app.use(express.json());
 
@@ -27,10 +29,14 @@ app.use("/api/v1/hotels", hotelsRouter);
 app.use("/api/v1/roundTrips", roundTripsRouter);
 app.use("/api/v1/orders", ordersRouter);
 app.use("/api/v1/setAdmin", adminsRouter);
-app.use("/api/v1/dayTrips", dayTripsRouter);
-app.use("/api/v1/festivals", festivalsRouter);
+
+app.use("/api/v1/dayTrips",dayTripsRouter);
+app.use("/api/v1/festivals",festivalsRouter);
+app.use("/api/v1/dayTips/category",categoryRouter);
 app.use("/api/v1/admins", adminsRouter);
 app.use("/api/v1/wishlists", wishlistsRouter);
+
+app.use("/api/v1/cruiseShips",cruiseShipRouter);
 
 const listener = app.listen(process.env.PORT || 5000, () => {
   console.log("App is listening on port " + listener.address().port);

@@ -10,6 +10,8 @@ router.post("/add", wishlistController.addWishlistItem);
 router.post("/delete", wishlistController.deleteWishlistItem);
 // GET method for all wishlists
 router.get("/", wishlistController.getWishlists);
+//PUT method to toggle a wish
+router.put("/toggle", wishlistController.toggleWishlistItem);
 // // GET method for a user's wishlist
 router.get("/:userId", wishlistController.getWishlist);
 

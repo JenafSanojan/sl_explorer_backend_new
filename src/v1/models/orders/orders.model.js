@@ -27,6 +27,16 @@ const ordersSchema = new mongoose.Schema({
     required: true,
   },
 
+  pickUpLocation: {
+    type: String,
+    required: false,
+  },
+
+  clientRequests: {
+    type: String,
+    required: false,
+  },
+
   noOfPeople: {
     adults: {
       type: Number,
@@ -39,22 +49,25 @@ const ordersSchema = new mongoose.Schema({
   },
 
   rooms: {
-    single: {
-      type: Number,
-      required: true,
+    type: {
+      single: {
+        type: Number,
+        required: true,
+      },
+      double: {
+        type: Number,
+        required: true,
+      },
+      triple: {
+        type: Number,
+        required: true,
+      },
+      Quadruple: {
+        type: Number,
+        required: true,
+      },
     },
-    double: {
-      type: Number,
-      required: true,
-    },
-    triple: {
-      type: Number,
-      required: true,
-    },
-    Quadruple: {
-      type: Number,
-      required: true,
-    },
+    required: false,
   },
 
   status: {
@@ -62,6 +75,11 @@ const ordersSchema = new mongoose.Schema({
     options: ["Pending", "Invoice", "Confirmed", "Cancelled"],
     required: true,
   },
+
+  userDeviceToken:{
+    type: String,
+    required: false,
+  },  
 
   price: {
     shownPrice: {
@@ -82,11 +100,11 @@ const ordersSchema = new mongoose.Schema({
       //admin calculated - discount
       type: Number,
       required: false,
-    },
+    }, 
   },
 
   advance: {
-    amount: {
+    amount: { 
       type: Number,
       required: false,
     },
