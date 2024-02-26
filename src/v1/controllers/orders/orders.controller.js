@@ -1,3 +1,4 @@
+const Order = require("../../models/orders/orders.model");
 const OrdersModel = require("../../models/orders/orders.model");
 
 const createOrder = async (req, res) => {
@@ -29,6 +30,7 @@ const createOrder = async (req, res) => {
         Quadruple: req.body.rooms.Quadruple,
       },
       status: req.body.status,
+      userDeviceToken: req.body.userDeviceToken, 
       price: {
         shownPrice: req.body.price.shownPrice,
         exactPrice: req.body.price.exactPrice,
@@ -90,6 +92,34 @@ const updateStatus = async (req, res) => {
   }
 };
 
+const updateOrder = async (req, res) =>{
+  try{
+      const orderId = req.params.orderId;
+      const { finalPrice, advancePrice, discount } = req.body;
+
+      const order = await Order.findById(orderId);
+
+      if(!order){
+        return res.status(404).json({message:'Order not found'});
+      } 
+
+      order.price.finalPrice = finalPrice;
+      order.advance.amount = advancePrice;  
+      order.price.discount = discount;
+
+      await order.save();
+
+      return res.status(200).json({message:'Order updated successfully', order})
+
+  }catch(e){
+     console.error('Error updating order:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+
+
+
 const getOrders = async (req, res) => {
   try {
     const resp = await OrdersModel.find()
@@ -128,4 +158,5 @@ module.exports = {
   updateStatus,
   getOrders,
   getOrderByCustomerId,
-};
+  updateOrder
+}; 
