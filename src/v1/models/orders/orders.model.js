@@ -95,11 +95,11 @@ const ordersSchema = new mongoose.Schema({
       //admin calculated - discount
       type: Number,
       required: false,
-    },
+    }, 
   },
 
   advance: {
-    amount: {
+    amount: { 
       type: Number,
       required: false,
     },
