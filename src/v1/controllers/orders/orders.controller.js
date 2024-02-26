@@ -80,16 +80,12 @@ const updateStatus = async (req, res) => {
     // }
 
     // Updating only the "reference" field
-    existingOrder.status = {
-      reference: req.body.status || existingOrder.advance.reference,
-    };
+    existingOrder.status = req.body.status || existingOrder.status;
 
     // Saving the updated document
     await existingOrder.save();
 
-    return res
-      .status(200)
-      .json({ message: "Advance reference updated successfully" });
+    return res.status(200).json({ message: "Status updated successfully" });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: error.message });
