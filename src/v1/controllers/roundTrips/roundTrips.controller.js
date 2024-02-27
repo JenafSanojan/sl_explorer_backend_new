@@ -81,6 +81,21 @@ const updateRoundTrip = async (req, res) => {
   }
 };
 
+const deleteRoundTrip = async (req, res) => {
+  try {
+    const result = await RoundTripsModel.deleteOne({ _id: req.params.id });
+
+    if (result.deletedCount === 1) {
+      res.status(200).json({ message: "Document deleted successfully" });
+    } else {
+      res.status(404).json({ message: "Document not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" + error });
+  }
+};
+
 const getRoundTrips = async (req, res) => {
   try {
     const data = await RoundTripsModel.find().populate("hotels.hotel").exec();
@@ -104,6 +119,7 @@ const getRoundTripPackage = async (req, res) => {
 module.exports = {
   createRoundTrip,
   updateRoundTrip,
+  deleteRoundTrip,
   getRoundTrips,
   getRoundTripPackage,
 };
