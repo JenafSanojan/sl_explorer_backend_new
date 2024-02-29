@@ -79,6 +79,50 @@ const getDayTripById = async (req, res) => {
   }
 };
 
+const updateDayTrip = async (req, res) => {
+  try {
+    const newDayTrip = {
+      packageCategoryName: req.body.packageCategoryName,
+      packageCategoryImage: req.body.packageCategoryImage,
+      packageDays: req.body.packageDays,
+      packageName: req.body.packageName,
+      packageShortDescription: req.body.packageShortDescription,
+      packageCoverDescription: req.body.packageCoverDescription,
+      packageCoverImage: req.body.packageCoverImage,
+      packageImageLinks: req.body.packageImageLinks,
+      packageTitle: req.body.packageTitle,
+      packageSubTitle: req.body.packageSubTitle,
+      avaliableDates: req.body.avaliableDates,
+      hotels: req.body.hotels,
+      services: req.body.services,
+      price: req.body.price,
+    };
+
+    const dayTrip = await DayTripsModel.findByIdAndUpdate(
+      req.body.id,
+      newDayTrip
+    );
+    return res.status(201).send({ status: "success", data: dayTrip });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+const deleteDayTrip = async (req, res) => {
+  try {
+    const result = await DayTripsModel.deleteOne({ _id: req.params.id });
+
+    if (result.deletedCount === 1) {
+      res.status(200).json({ message: "Document deleted successfully" });
+    } else {
+      res.status(404).json({ message: "Document not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" + error });
+  }
+};
+
 const getDayTripsByCategory = async (req, res) => {
   try {
     const category = req.params.category;
@@ -131,6 +175,8 @@ module.exports = {
   createDayTrip,
   getDayTrips,
   getDayTripById,
+  updateDayTrip,
+  deleteDayTrip,
   getDayTripsByCategory,
   getDayTripsByPackageDays,
   getDayTripsByCategoryAndDuration,
