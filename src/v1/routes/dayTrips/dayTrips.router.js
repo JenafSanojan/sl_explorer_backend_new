@@ -1,11 +1,15 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const dayTripsController = require('../../controllers/dayTrips/dayTrips.controller'); 
+const dayTripsController = require("../../controllers/dayTrips/dayTrips.controller");
 
 router.post("/", dayTripsController.createDayTrip);
 router.get("/", dayTripsController.getDayTrips);
+router.get("/package/:packageId", dayTripsController.getDayTripById);
 router.get("/:packageDays", dayTripsController.getDayTripsByPackageDays);
-router.get('/:category', dayTripsController.getDayTripsByCategory);
-router.get('/:category/:duration', dayTripsController.getDayTripsByCategoryAndDuration);
+router.get("/:category", dayTripsController.getDayTripsByCategory);
+router.get(
+  "/:category/:duration",
+  dayTripsController.getDayTripsByCategoryAndDuration
+);
 
-module.exports = router; 
+module.exports = router;
