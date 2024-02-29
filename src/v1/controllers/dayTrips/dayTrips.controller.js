@@ -99,7 +99,7 @@ const updateDayTrip = async (req, res) => {
     };
 
     const dayTrip = await DayTripsModel.findByIdAndUpdate(
-      req.body.id,
+      req.params.id,
       newDayTrip
     );
     return res.status(201).send({ status: "success", data: dayTrip });
