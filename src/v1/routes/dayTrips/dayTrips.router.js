@@ -4,8 +4,8 @@ const dayTripsController = require("../../controllers/dayTrips/dayTrips.controll
 
 router.post("/", dayTripsController.createDayTrip);
 router.get("/", dayTripsController.getDayTrips);
-router.put("/:packageId", dayTripsController.updateDayTrip);
-router.delete("/:packageId", dayTripsController.deleteDayTrip);
+router.put("/:id", dayTripsController.updateDayTrip);
+router.delete("/:id", dayTripsController.deleteDayTrip);
 router.get("/package/:packageId", dayTripsController.getDayTripById);
 router.get("/:packageDays", dayTripsController.getDayTripsByPackageDays);
 router.get("/:category", dayTripsController.getDayTripsByCategory);
