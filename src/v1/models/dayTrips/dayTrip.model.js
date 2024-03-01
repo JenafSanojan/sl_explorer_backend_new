@@ -49,8 +49,8 @@ const dayTripsSchema = new mongoose.Schema({
         ref: 'Hotels'
       }],
       services: [{
-        name: String,
         category: String, // 'included', 'not included', 'recommendations'
+        name: String,        
       }],
     price: {
       type: Number,
