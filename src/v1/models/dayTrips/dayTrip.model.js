@@ -48,9 +48,10 @@ const dayTripsSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Hotels'
       }],
-    services: {
-      type: Array,
-    },
+      services: [{
+        category: String, // 'included', 'not included', 'recommendations'
+        name: String,        
+      }],
     price: {
       type: Number,
       required: true,
