@@ -1,15 +1,26 @@
+const { response } = require("express");
 const Wishlist = require("../../models/wishlist/wishlists.model");
 
 //wishlist controller
 // user id, [packageId]
 
-// Create a new wishlist for a user
-const createWishlist = async (req, res) => {
+//Local function for wishlist creation
+const createWishlistLocalFunc = async (req, res) => {
   try {
     const newWishlist = new Wishlist({
       userId: req.body.userId,
     });
     const wishlist = await Wishlist.create(newWishlist);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+// Create a new wishlist for a user
+const createWishlist = async (req, res) => {
+  try {
+    await createWishlistLocalFunc(req, res);
     return res.status(201).json({ message: "Wishlist created successfully" });
   } catch (error) {
     console.error(error);
@@ -20,23 +31,20 @@ const createWishlist = async (req, res) => {
 // Add an item to a user's wishlist
 const addWishlistItem = async (req, res) => {
   try {
-    existingWishlist = await Wishlist.findOne({
+    let existingWishlist = await Wishlist.findOne({
       userId: req.body.userId,
     });
-    if (existingWishlist) {
-      existingWishlist.wishes.push(req.body.packageId);
-      await existingWishlist.save();
-    } else {
-      const newWishlist = new Wishlist({
-        userId: req.body.userId,
-      });
-      const wishlist = await Wishlist.create(newWishlist);
+
+    if (!existingWishlist) {
+      await createWishlistLocalFunc(req, res);
       existingWishlist = await Wishlist.findOne({
         userId: req.body.userId,
       });
-      existingWishlist.wishes.push(req.body.packageId);
-      await existingWishlist.save();
     }
+
+    existingWishlist.wishes.push(req.body.packageId);
+    await existingWishlist.save();
+
     return res
       .status(201)
       .json({ message: "Wishlist item added successfully" });
@@ -52,19 +60,22 @@ const deleteWishlistItem = async (req, res) => {
     existingWishlist = await Wishlist.findOne({
       userId: req.body.userId,
     });
-    if (existingWishlist) {
-      existingWishlist.wishes = existingWishlist.wishes.filter(
-        (wish) => wish != req.body.packageId
-      );
-      await existingWishlist.save();
-      return res
-        .status(201)
-        .json({ message: "Wishlist item deleted successfully" });
-    } else {
-      return res
-        .status(500)
-        .json({ message: "No wishlist found for the user" });
+
+    if (!existingWishlist) {
+      await createWishlistLocalFunc(req, res);
+      existingWishlist = await Wishlist.findOne({
+        userId: req.body.userId,
+      });
     }
+
+    existingWishlist.wishes = existingWishlist.wishes.filter(
+      (wish) => wish != req.body.packageId
+    );
+    await existingWishlist.save();
+
+    return res
+      .status(201)
+      .json({ message: "Wishlist item deleted successfully" });
   } catch (e) {
     console.error(e);
     res.status(500).json({ message: e.message });
@@ -79,20 +90,12 @@ const toggleWishlistItem = async (req, res) => {
     });
     if (existingWishlist) {
       if (existingWishlist.wishes.includes(req.body.packageId)) {
-        existingWishlist.wishes = existingWishlist.wishes.filter(
-          (wish) => wish != req.body.packageId
-        );
+        await deleteWishlistItem(req, res);
       } else {
-        existingWishlist.wishes.push(req.body.packageId);
+        await addWishlistItem(req, res);
       }
-      await existingWishlist.save();
-      return res
-        .status(201)
-        .json({ message: "Wishlist item toggled successfully" });
     } else {
-      return res
-        .status(500)
-        .json({ message: "No wishlist found for the user" });
+      await addWishlistItem(req, res);
     }
   } catch (e) {
     console.error(e);
