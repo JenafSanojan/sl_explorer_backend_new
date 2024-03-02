@@ -19,12 +19,16 @@ app.use(express.json());
 
 app.use(cors());
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL:
-    "https://console.firebase.google.com/project/sl-explorer/database/sl-explorer-default-rtdb/data/~2F",
-  storageBucket: "sl-explorer.appspot.com",
-});
+try {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL:
+      "https://console.firebase.google.com/project/sl-explorer/database/sl-explorer-default-rtdb/data/~2F",
+    storageBucket: "gs://sl-explorer.appspot.com",
+  });
+} catch (e) {
+  console.log(e);
+}
 
 app.use("/api/v1/hotels", hotelsRouter);
 app.use("/api/v1/roundTrips", roundTripsRouter);
