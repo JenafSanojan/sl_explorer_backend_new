@@ -1,4 +1,5 @@
 const RoundTripsModel = require("../../models/roundTrips/roundTrips.mongo");
+const admin = require("firebase-admin");
 
 const deleteImage = async (imageUrl) => {
   const bucket = admin.storage().bucket();
@@ -77,26 +78,26 @@ const updateRoundTrip = async (req, res) => {
       prices: req.body.prices,
     };
 
-    let existingRoundTrip = await RoundTripsModel.findById(req.params.id);
+    // let existingRoundTrip = await RoundTripsModel.findById(req.params.id);
 
-    if (existingRoundTrip) {
-      if (existingRoundTrip.packageCoverImage != req.body.packageCoverImage) {
-        await deleteImage(existingRoundTrip.packageCoverImage);
-      }
-      for (
-        let index = 0;
-        index < existingRoundTrip.packageImageLinks.length &&
-        index < req.body.packageImageLinks.length;
-        index++
-      ) {
-        if (
-          existingRoundTrip.packageImageLinks[index] !=
-          req.body.packageImageLinks[index]
-        ) {
-          await deleteImage(existingRoundTrip.packageImageLinks[index]);
-        }
-      }
-    }
+    // if (existingRoundTrip) {
+    //   if (existingRoundTrip.packageCoverImage != req.body.packageCoverImage) {
+    //     await deleteImage(existingRoundTrip.packageCoverImage);
+    //   }
+    //   for (
+    //     let index = 0;
+    //     index < existingRoundTrip.packageImageLinks.length &&
+    //     index < req.body.packageImageLinks.length;
+    //     index++
+    //   ) {
+    //     if (
+    //       existingRoundTrip.packageImageLinks[index] !=
+    //       req.body.packageImageLinks[index]
+    //     ) {
+    //       await deleteImage(existingRoundTrip.packageImageLinks[index]);
+    //     }
+    //   }
+    // }
 
     const roundTrip = await RoundTripsModel.findByIdAndUpdate(
       req.body.id,
@@ -113,12 +114,12 @@ const deleteRoundTrip = async (req, res) => {
     let existingRoundTrip = await RoundTripsModel.findById(req.params.id);
 
     if (existingRoundTrip) {
-      await deleteImage(existingRoundTrip.packageCoverImage);
-      await Promise.all(
-        existingRoundTrip.packageImageLinks.map(async (element) => {
-          await deleteImage(element);
-        })
-      );
+      // await deleteImage(existingRoundTrip.packageCoverImage);
+      // await Promise.all(
+      //   existingRoundTrip.packageImageLinks.map(async (element) => {
+      //     await deleteImage(element);
+      //   })
+      // );
 
       const result = await RoundTripsModel.deleteOne({ _id: req.params.id });
       res.status(200).json({ message: "Document deleted successfully" });
