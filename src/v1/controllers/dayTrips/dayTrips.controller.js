@@ -14,7 +14,7 @@ const createDayTrip = async (req, res) => {
       !req.body.packageImageLinks ||
       !req.body.packageTitle ||
       !req.body.packageSubTitle ||
-      !req.body.avaliableDates ||
+      !req.body.locations ||
       !req.body.hotels ||
       !req.body.services ||
       !req.body.price
@@ -44,7 +44,7 @@ const createDayTrip = async (req, res) => {
       packageImageLinks: req.body.packageImageLinks,
       packageTitle: req.body.packageTitle,
       packageSubTitle: req.body.packageSubTitle,
-      avaliableDates: req.body.avaliableDates,
+      locations: req.body.locations,
       hotels: req.body.hotels,
       services: req.body.services,
       price: req.body.price,
@@ -92,7 +92,7 @@ const updateDayTrip = async (req, res) => {
       packageImageLinks: req.body.packageImageLinks,
       packageTitle: req.body.packageTitle,
       packageSubTitle: req.body.packageSubTitle,
-      avaliableDates: req.body.avaliableDates,
+      locations: req.body.locations,
       hotels: req.body.hotels,
       services: req.body.services,
       price: req.body.price,
