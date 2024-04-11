@@ -7,30 +7,7 @@ const deleteImage = async (deleteUrl) => {
     const path = decodeURIComponent(deleteUrl.split("o/")[1].split("?")[0]);
     await bucket.file(path).delete();
   } catch (e) {
-    console.log(e);
-  }
-};
-const moveUpFunction = async (order, count) => {
-  try {
-    // updating
-    if (order < count && order > 0) {
-      await RoundTripsModel.updateOne({ order: order }, { $inc: { order: 1 } });
-    }
-  } catch (err) {
-    throw err;
-  }
-};
-const moveDownFunction = async (order, count) => {
-  try {
-    // updating
-    if (order <= count && order > 1) {
-      await RoundTripsModel.updateOne(
-        { order: order },
-        { $inc: { order: -1 } }
-      );
-    }
-  } catch (err) {
-    throw err;
+    console.log(e.message);
   }
 };
 
@@ -79,48 +56,77 @@ const createRoundTrip = async (req, res) => {
 };
 
 const moveUp = async (req, res) => {
-  //_id, order required
+  //id, order required
   try {
     // retriving the roundTrip
     const roundTrip = await RoundTripsModel.findOne({ order: req.body.order });
 
     // verifying if the order is unique
-    if (roundTrip._id != req.body._id) {
+    if (roundTrip._id != req.params.id)
       return res
         .status(500)
-        .send({ message: "Found many packages with same order..!" });
-    }
+        .send({ message: "Something went wrong, refresh..!" });
 
     // retriving needed detaiils
     const estimatedCount = await RoundTripsModel.estimatedDocumentCount();
+    if (req.body.order == estimatedCount)
+      return res.status(200).json({ message: "Already at the top" });
 
     // moving the order
-    moveUpFunction(req.body.order, estimatedCount);
-    moveDownFunction(req.body.order + 1, estimatedCount);
+    if (req.body.order < estimatedCount && req.body.order > 0) {
+      // down
+      await RoundTripsModel.updateOne(
+        { order: req.body.order + 1 },
+        { $inc: { order: -1 } }
+      );
+      // up
+      await RoundTripsModel.updateOne(
+        { _id: req.params.id },
+        { $inc: { order: 1 } }
+      );
+    }
+
+    return res.status(200).json({ message: "Moved Up successfully" });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
-}; //_id nor id
+};
 const moveDown = async (req, res) => {
-  //_id, order required
+  //id, order required
   try {
     // retriving the roundTrip
     const roundTrip = await RoundTripsModel.findOne({ order: req.body.order });
 
     // verifying if the order is unique
-    if (roundTrip._id != req.body._id) {
+    if (roundTrip._id != req.params.id)
       return res
         .status(500)
-        .send({ message: "Found many packages with same order..!" });
-    }
+        .send({ message: "Something went wrong, refresh..!" });
+
+    // retriving needed detaiils
+    const estimatedCount = await RoundTripsModel.estimatedDocumentCount();
+    if (req.body.order == 1)
+      return res.status(200).json({ message: "Already at the bottom" });
 
     // moving the order
-    moveDownFunction(req.body.order);
-    moveUpFunction(req.body.order - 1);
+    if (req.body.order <= estimatedCount && req.body.order > 1) {
+      // up
+      await RoundTripsModel.updateOne(
+        { order: req.body.order - 1 },
+        { $inc: { order: 1 } }
+      );
+      // down
+      await RoundTripsModel.updateOne(
+        { _id: req.params.id },
+        { $inc: { order: -1 } }
+      );
+    }
+
+    return res.status(200).json({ message: "Moved Down successfully" });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
-}; //_id nor id
+};
 
 const updateRoundTrip = async (req, res) => {
   try {
@@ -250,6 +256,8 @@ const getRoundTripPackage = async (req, res) => {
 
 module.exports = {
   createRoundTrip,
+  moveUp,
+  moveDown,
   updateRoundTrip,
   deleteRoundTrip,
   getRoundTrips,
