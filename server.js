@@ -21,6 +21,7 @@ const a_zRouter=require("./src/v1/routes/slA_Z/slA_Z.router.js");
 const paymentRouter = require("./src/v1/routes/payments/payments.router.js");
 
 app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 
 app.use(cors());
 
@@ -35,8 +36,7 @@ try {
   console.log(e); 
 }
 
-const key = 'sk_test_51P7Kv2P2T7YncC47TkYD9rgaAGQ4WS5W7OvitfgE6tPfscDEjHpcgioG5ccpzYmRjqn6rpCNKsuDlU8uGYLTEthh00IjXEVgLN';
-const stripe = new Stripe(key);
+
 
 
 app.use("/api/v1/hotels", hotelsRouter);
