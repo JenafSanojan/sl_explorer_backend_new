@@ -38,23 +38,29 @@ const dayTripsSchema = new mongoose.Schema({
     },
     packageSubTitle: {
       type: String,
-      required: true,
     },
-    avaliableDates: [{
-        dayName: String,
-        avaliability:Boolean,
+    locations: [{
+      name: String,
+      prices:Number,
+      avaliableDates: [{
+          dayName: String,
+          avaliability: Boolean,
       }],
+  }],
     hotels: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Hotels'
       }],
-    services: {
-      type: Array,
-    },
+      services: [{
+        category: {
+          type: String,
+          enum: ['included', 'not included', 'recommendations'],
+        },
+        name: String,
+      }],
     price: {
       type: Number,
-      required: true,
-    },
+    }
 });
 
 module.exports = mongoose.model('DayTrips', dayTripsSchema);
