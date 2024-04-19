@@ -18,6 +18,7 @@ const categoryRouter = require("./src/v1/routes/dayTrips/category.router");
 const wishlistsRouter = require("./src/v1/routes/wishlist/wishlist.router.js");
 const cruiseShipRouter = require("./src/v1/routes/cruiseShips/cruiseShip.router.js");
 const a_zRouter=require("./src/v1/routes/slA_Z/slA_Z.router.js");
+const paymentRouter = require("./src/v1/routes/payments/payments.router.js");
 
 app.use(express.json());
 
@@ -34,6 +35,10 @@ try {
   console.log(e); 
 }
 
+const key = 'sk_test_51P7Kv2P2T7YncC47TkYD9rgaAGQ4WS5W7OvitfgE6tPfscDEjHpcgioG5ccpzYmRjqn6rpCNKsuDlU8uGYLTEthh00IjXEVgLN';
+const stripe = new Stripe(key);
+
+
 app.use("/api/v1/hotels", hotelsRouter);
 app.use("/api/v1/roundTrips", roundTripsRouter);
 app.use("/api/v1/orders", ordersRouter);
@@ -47,6 +52,7 @@ app.use("/api/v1/wishlists", wishlistsRouter);
 
 app.use("/api/v1/cruiseShips",cruiseShipRouter);
 app.use("/api/v1/a_z",a_zRouter);
+app.use("/api/v1/payment",paymentRouter);
 
 const listener = app.listen(process.env.PORT || 5000, () => {
   console.log("App is listening on port " + listener.address().port);

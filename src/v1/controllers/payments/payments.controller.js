@@ -5,7 +5,7 @@ const createPayment = async (req, res) => {
       amount: body?.amount,
       currency: body?.currency,
     });
-
+ 
     if(paymentIntent?.status !== 'completed'){
         console.log('=====in');
         return res.status(200).json({
