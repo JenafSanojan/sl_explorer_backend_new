@@ -1,3 +1,7 @@
+const Stripe = require("stripe");
+const key = 'sk_test_51P7Kv2P2T7YncC47TkYD9rgaAGQ4WS5W7OvitfgE6tPfscDEjHpcgioG5ccpzYmRjqn6rpCNKsuDlU8uGYLTEthh00IjXEVgLN';
+const stripe = new Stripe(key);
+
 const createPayment = async (req, res) => {
   try {
     const { body } = req;
