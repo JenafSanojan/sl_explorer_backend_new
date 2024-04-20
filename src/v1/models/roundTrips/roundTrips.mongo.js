@@ -70,11 +70,11 @@ const roundTripsSchema = new mongoose.Schema({
       day: { type: Number, options: [1, 2, 3, 4, 5, 6, 7], default: 1 }, // 1 = every sunday ----- 7 = every saturday
       details: {
         type: [
-          //Array of details, each having three entries
+          //Array of details, each having three entries, describing a day details, not required
           {
-            date: { type: Date, required: true },
-            availability: { type: Boolean, default: true },
-            filledSeats: { type: Number, default: 0 }, //
+            date: { type: Date, required: true }, // For a date
+            availability: { type: Boolean, default: true }, // is the trip available on this date
+            filledSeats: { type: Number, default: 0 }, // how many seats are filled
           },
         ],
       },

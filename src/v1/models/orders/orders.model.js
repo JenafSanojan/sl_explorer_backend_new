@@ -76,10 +76,10 @@ const ordersSchema = new mongoose.Schema({
     required: true,
   },
 
-  userDeviceToken:{
+  userDeviceToken: {
     type: String,
     required: false,
-  },  
+  },
 
   price: {
     shownPrice: {
@@ -100,11 +100,11 @@ const ordersSchema = new mongoose.Schema({
       //admin calculated - discount
       type: Number,
       required: false,
-    }, 
+    },
   },
 
   advance: {
-    amount: { 
+    amount: {
       type: Number,
       required: false,
     },
