@@ -121,7 +121,7 @@ const getOrders = async (req, res) => {
   try {
     const resp = await Order.find()
       .populate("packageId.roundTrip")
-      // .populate("packageId.dayTrip")
+      .populate("packageId.dayTrip") 
       .exec();
     return res.status(200).json(resp);
   } catch (error) {
