@@ -31,8 +31,6 @@ const createRoundTrip = async (req, res) => {
 
     const estimatedCount = await RoundTripsModel.estimatedDocumentCount();
 
-    console.log("current roundtrips count: " + estimatedCount);
-
     const newRoundTrip = {
       order: estimatedCount + 1,
       packageName: req.body.packageName,
@@ -46,6 +44,7 @@ const createRoundTrip = async (req, res) => {
       itenary: req.body.itenary,
       hotels: req.body.hotels,
       prices: req.body.prices,
+      dates: req.body.dates,
     };
 
     const roundTrip = await RoundTripsModel.create(newRoundTrip);
